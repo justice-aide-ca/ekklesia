@@ -41,13 +41,10 @@
         <p>🔒 Rien n'est enregistré · 🕊️ Un compagnon silencieux</p>
     </footer>
 </div>
-
-<script>
-// Configuration - À MODIFIER AVEC VOTRE PROPRE CLÉ API OPENAI
-const OPENAI_API_KEY = "VOTRE_CLE_API_ICI";
+// Configuration
+const OPENAI_API_KEY = "sk-proj-VeolI718FDqY_90UZPvLNL1Ga0a21Yoa-tZM4vYt5n01am_Nui4oEinU-BNICLBRYST1SBm48T3B1bKfJXmVJ8xddRDJYQoLpON-jUBm1PvQYg3eZ6vriq7k6R815ue7BjgDEuHv9rZphxpdVtUogC2GcA";
 const API_URL = "https://api.openai.com/v1/chat/completions";
 
-// Le prompt système pour l'IA
 const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement et à l'action.
 
 Tu accompagnes des personnes – catholiques ou non, croyantes ou non – qui vivent une situation problématique, souvent une tension entre ce qu'elles croient, ce qu'elles vivent, et ce que leur institution ou leur entourage attend d'elles.
@@ -125,6 +122,4 @@ document.getElementById('submitBtn').onclick = async function() {
         document.getElementById('submitBtn').disabled = false;
     }
 };
-</script>
-</body>
-</html>
+
