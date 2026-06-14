@@ -1,68 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discerner – Ekklesia</title>
+    <style>
+        body { font-family: Georgia, serif; background: #faf9f7; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 16px; }
+        h1 { color: #4a3b2c; text-align: center; font-size: 1.8rem; }
+        .sous-titre { text-align: center; color: #7a6b5a; font-style: italic; margin-bottom: 1.5rem; }
+        textarea, input { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        button { background: #4a6f5e; color: white; padding: 10px 20px; border: none; border-radius: 40px; cursor: pointer; font-size: 1rem; }
+        .reponse-card { margin-top: 20px; background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; border-radius: 8px; }
+        .back-link { display: inline-block; margin-top: 20px; color: #7a6b5a; }
+        footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
+        .loading { text-align: center; margin-top: 20px; color: #4a6f5e; font-style: italic; }
+        .error { color: #c0392b; background: #fdecea; padding: 10px; border-radius: 8px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>⛪ Ekklesia</h1>
+    <div class="sous-titre">Justice et Paix s'embrassent</div>
+
+    <h2>Décrivez votre situation</h2>
+
+    <textarea id="situation" rows="6" placeholder="Exemple : « Je suis prêtre. La famille d'un patient qui a demandé l'aide médicale à mourir me demande d'aller lui donner le sacrement des malades. Je ne sais pas quoi faire. »"></textarea>
+
+    <input type="text" id="role" placeholder="Votre rôle (optionnel) – ex: prêtre, soignant, famille">
+
+    <button id="submitBtn">Recevoir une aide au discernement →</button>
+
+    <div id="reponse" class="reponse-card" style="display:none;"></div>
+    <div id="loading" class="loading" style="display:none;">🕯️ Un instant... Je prends le temps d'accueillir votre situation...</div>
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div><a href="../index.html" class="back-link">← Retour à l'accueil</a></div>
+
+    <footer>
+        <p>🔒 Rien n'est enregistré · 🕊️ Un compagnon silencieux</p>
+    </footer>
+</div>
+
 <script>
-const OPENAI_API_KEY = "sk-proj-VeolI718FDqY_90U2PvLN1G6a21Yoa-tZM4vYt5n01am_Nui4oEinU-BNICLBRYST15Bm48T3B1bKfJXmJV8xdxRDRJYQoLpON-jUBm1PvQYg3eZ6vriq7k6R815ue7BjgdDEuHv9rZhpqdvTtUogC2GcA";
-const API_URL = "https://cors-anywhere.herokuapp.com/https://api.openai.com/v1/chat/completions";
-
-const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement et à l'action...`;
-
-document.getElementById('submitBtn').onclick = async function() {
+// Version sans API pour l'instant – réponses simulées
+document.getElementById('submitBtn').onclick = function() {
     const situation = document.getElementById('situation').value.trim();
-    const role = document.getElementById('role').value.trim();
-    
     if (!situation) {
         alert("Veuillez décrire votre situation.");
         return;
     }
     
-    let userMessage = situation;
-    if (role) {
-        userMessage = `Mon rôle : ${role}\n\nMa situation : ${situation}`;
-    }
-    
     const reponseDiv = document.getElementById('reponse');
     const loadingDiv = document.getElementById('loading');
-    const errorDiv = document.getElementById('error');
     
-    reponseDiv.style.display = 'none';
-    errorDiv.style.display = 'none';
     loadingDiv.style.display = 'block';
-    document.getElementById('submitBtn').disabled = true;
+    reponseDiv.style.display = 'none';
     
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`,
-                'Origin': 'https://justice-aide-ca.github.io'
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [
-                    { role: "system", content: SYSTEM_PROMPT },
-                    { role: "user", content: userMessage }
-                ],
-                temperature: 0.5,
-                max_tokens: 1200
-            })
-        });
+    // Simulation d'attente
+    setTimeout(() => {
+        let reponse = '<strong>1. Accueillons votre situation</strong><br><br>' +
+                      'Vous êtes prêtre. Une bénévole vous consulte sur l\'accompagnement d\'un proche qui va recevoir l\'aide médicale à mourir. C\'est une situation lourde, et c\'est normal que vous vous interrogiez.<br><br>' +
+                      '<strong>2. Ce qui bloque</strong><br><br>' +
+                      'La bénévole est prise entre son amour pour son proche, sa foi, et son rôle auprès de lui. Vous-même êtes entre le devoir de compassion et l\'enseignement de l\'Église.<br><br>' +
+                      '<strong>3. Une petite liberté possible</strong><br><br>' +
+                      'La bénévole peut être présente sans approuver l\'acte. Sa simple présence, son écoute, sa tendresse – cela n\'est pas interdit. C\'est même l\'essentiel.<br><br>' +
+                      '<strong>4. Le pas juste</strong><br><br>' +
+                      'Ni abandonner la personne (par peur de mal faire), ni nier la réalité de l\'AMM. Le juste milieu : accompagner la bénévole pour qu\'elle puisse être là, simplement, en lui rappelant que Dieu ne retire jamais son amour.<br><br>' +
+                      '<strong>5. Action pour aujourd\'hui</strong><br><br>' +
+                      'Appelez ou voyez la bénévole. Dites-lui : "Va. Sois présente. N\'aie pas peur. Ton amour pour ton proche n\'est pas un péché."<br><br>' +
+                      '<strong>6. Une parole d\'espérance</strong><br><br>' +
+                      'Dieu est plus grand que nos gestes et nos limites. Il ne mesure pas l\'amour à la pureté des actes, mais à la vérité du cœur. Confiez cette famille à la miséricorde.';
         
-        if (!response.ok) {
-            throw new Error("Erreur API");
-        }
-        
-        const data = await response.json();
-        const reponseTexte = data.choices[0].message.content;
-        
-        reponseDiv.innerHTML = reponseTexte.replace(/\n/g, '<br><br>');
+        reponseDiv.innerHTML = reponse;
         reponseDiv.style.display = 'block';
-        
-    } catch (error) {
-        errorDiv.innerHTML = "❌ Une erreur est survenue. Veuillez réessayer plus tard.";
-        errorDiv.style.display = 'block';
-        console.error(error);
-    } finally {
         loadingDiv.style.display = 'none';
-        document.getElementById('submitBtn').disabled = false;
-    }
+    }, 1000);
 };
 </script>
+</body>
+</html>
