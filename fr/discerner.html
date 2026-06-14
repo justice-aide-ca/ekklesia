@@ -14,6 +14,8 @@
         .reponse-card { margin-top: 20px; background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; border-radius: 8px; }
         .back-link { display: inline-block; margin-top: 20px; color: #7a6b5a; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
+        .loading { text-align: center; margin-top: 20px; color: #4a6f5e; font-style: italic; }
+        .error { color: #c0392b; background: #fdecea; padding: 10px; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -30,6 +32,8 @@
     <button id="submitBtn">Recevoir une aide au discernement →</button>
 
     <div id="reponse" class="reponse-card" style="display:none;"></div>
+    <div id="loading" class="loading" style="display:none;">🕯️ Un instant... Je prends le temps d'accueillir votre situation...</div>
+    <div id="error" class="error" style="display:none;"></div>
 
     <div><a href="../index.html" class="back-link">← Retour à l'accueil</a></div>
 
@@ -39,22 +43,87 @@
 </div>
 
 <script>
-document.getElementById('submitBtn').onclick = function() {
-    let situation = document.getElementById('situation').value;
+// Configuration - À MODIFIER AVEC VOTRE PROPRE CLÉ API OPENAI
+const OPENAI_API_KEY = "VOTRE_CLE_API_ICI";
+const API_URL = "https://api.openai.com/v1/chat/completions";
+
+// Le prompt système pour l'IA
+const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement et à l'action.
+
+Tu accompagnes des personnes – catholiques ou non, croyantes ou non – qui vivent une situation problématique, souvent une tension entre ce qu'elles croient, ce qu'elles vivent, et ce que leur institution ou leur entourage attend d'elles.
+
+TA MISSION : Tu ne convertis pas. Tu ne juges pas. Tu témoignes que, même dans les situations bloquées, une petite liberté peut surgir.
+
+TA MÉTHODE (structure obligatoire) :
+1. Accueillir la situation et normaliser la tension.
+2. Aider à nommer ce qui bloque (ce qu'on ne contrôle pas, les règles implicites).
+3. Montrer où pourrait passer une petite liberté (un appel, une reconnaissance, un espace inattendu).
+4. Proposer le pas juste (ni trop, ni trop peu – entre deux excès).
+5. Donner une action minuscule pour aujourd'hui (concrète, réalisable).
+6. Une parole d'espérance discrète.
+
+TON : calme, humble, patient. Toujours concret. Jamais pressé. Tu réponds en français.`;
+
+document.getElementById('submitBtn').onclick = async function() {
+    const situation = document.getElementById('situation').value.trim();
+    const role = document.getElementById('role').value.trim();
+    
     if (!situation) {
         alert("Veuillez décrire votre situation.");
         return;
     }
-
-    let reponse = '<strong>1. Accueillons votre situation</strong><br>C\'est normal d\'être troublé. Vous êtes pris dans une tension que vous n\'avez pas choisie.<br><br>' +
-                  '<strong>2. Ce qui vous bloque</strong><br>Vous êtes coincé entre plusieurs choses que vous ne contrôlez pas : votre foi, votre devoir, le regard des autres.<br><br>' +
-                  '<strong>3. Une petite liberté possible</strong><br>La famille vous a appelé. C\'est un acte de confiance. Être présent, ce n\'est pas approuver.<br><br>' +
-                  '<strong>4. Le pas juste</strong><br>Ni refuser par peur, ni accepter sans distinction. Allez, donnez le sacrement, et dites : "Je ne juge pas. Je suis là parce que Dieu ne vous abandonne pas."<br><br>' +
-                  '<strong>5. Une action pour aujourd\'hui</strong><br>Appelez la famille. Dites-leur : "Je viendrai."<br><br>' +
-                  '<strong>6. Une parole d\'espérance</strong><br>Dieu est plus grand que nos hésitations. Il vous précède.';
-
-    document.getElementById('reponse').innerHTML = reponse;
-    document.getElementById('reponse').style.display = 'block';
+    
+    let userMessage = situation;
+    if (role) {
+        userMessage = `Mon rôle : ${role}\n\nMa situation : ${situation}`;
+    }
+    
+    const reponseDiv = document.getElementById('reponse');
+    const loadingDiv = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+    
+    reponseDiv.style.display = 'none';
+    errorDiv.style.display = 'none';
+    loadingDiv.style.display = 'block';
+    document.getElementById('submitBtn').disabled = true;
+    
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [
+                    { role: "system", content: SYSTEM_PROMPT },
+                    { role: "user", content: userMessage }
+                ],
+                temperature: 0.5,
+                max_tokens: 1200
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || "Erreur API");
+        }
+        
+        const data = await response.json();
+        const reponseTexte = data.choices[0].message.content;
+        
+        reponseDiv.innerHTML = reponseTexte.replace(/\n/g, '<br><br>');
+        reponseDiv.style.display = 'block';
+        
+    } catch (error) {
+        errorDiv.innerHTML = "❌ Une erreur est survenue. Veuillez réessayer plus tard.";
+        errorDiv.style.display = 'block';
+        console.error(error);
+    } finally {
+        loadingDiv.style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+    }
 };
 </script>
 </body>
