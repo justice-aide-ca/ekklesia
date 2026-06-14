@@ -1,65 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discerner – Ekklesia</title>
-    <style>
-        body { font-family: Georgia, serif; background: #faf9f7; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 16px; }
-        h1 { color: #4a3b2c; text-align: center; font-size: 1.8rem; }
-        .sous-titre { text-align: center; color: #7a6b5a; font-style: italic; margin-bottom: 1.5rem; }
-        textarea, input { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
-        button { background: #4a6f5e; color: white; padding: 10px 20px; border: none; border-radius: 40px; cursor: pointer; font-size: 1rem; }
-        .reponse-card { margin-top: 20px; background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; border-radius: 8px; }
-        .back-link { display: inline-block; margin-top: 20px; color: #7a6b5a; }
-        footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
-        .loading { text-align: center; margin-top: 20px; color: #4a6f5e; font-style: italic; }
-        .error { color: #c0392b; background: #fdecea; padding: 10px; border-radius: 8px; margin-top: 20px; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h1>⛪ Ekklesia</h1>
-    <div class="sous-titre">Justice et Paix s'embrassent</div>
-
-    <h2>Décrivez votre situation</h2>
-
-    <textarea id="situation" rows="6" placeholder="Exemple : « Je suis prêtre. La famille d'un patient qui a demandé l'aide médicale à mourir me demande d'aller lui donner le sacrement des malades. Je ne sais pas quoi faire. »"></textarea>
-
-    <input type="text" id="role" placeholder="Votre rôle (optionnel) – ex: prêtre, soignant, famille">
-
-    <button id="submitBtn">Recevoir une aide au discernement →</button>
-
-    <div id="reponse" class="reponse-card" style="display:none;"></div>
-    <div id="loading" class="loading" style="display:none;">🕯️ Un instant... Je prends le temps d'accueillir votre situation...</div>
-    <div id="error" class="error" style="display:none;"></div>
-
-    <div><a href="../index.html" class="back-link">← Retour à l'accueil</a></div>
-
-    <footer>
-        <p>🔒 Rien n'est enregistré · 🕊️ Un compagnon silencieux</p>
-    </footer>
-</div>
-
 <script>
 const OPENAI_API_KEY = "sk-proj-VeolI718FDqY_90U2PvLN1G6a21Yoa-tZM4vYt5n01am_Nui4oEinU-BNICLBRYST15Bm48T3B1bKfJXmJV8xdxRDRJYQoLpON-jUBm1PvQYg3eZ6vriq7k6R815ue7BjgdDEuHv9rZhpqdvTtUogC2GcA";
 const API_URL = "https://cors-anywhere.herokuapp.com/https://api.openai.com/v1/chat/completions";
-const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement et à l'action.
 
-Tu accompagnes des personnes – catholiques ou non, croyantes ou non – qui vivent une situation problématique, souvent une tension entre ce qu'elles croient, ce qu'elles vivent, et ce que leur institution ou leur entourage attend d'elles.
-
-TA MISSION : Tu ne convertis pas. Tu ne juges pas. Tu témoignes que, même dans les situations bloquées, une petite liberté peut surgir.
-
-TA MÉTHODE (structure obligatoire) :
-1. Accueillir la situation et normaliser la tension.
-2. Aider à nommer ce qui bloque (ce qu'on ne contrôle pas, les règles implicites).
-3. Montrer où pourrait passer une petite liberté (un appel, une reconnaissance, un espace inattendu).
-4. Proposer le pas juste (ni trop, ni trop peu – entre deux excès).
-5. Donner une action minuscule pour aujourd'hui (concrète, réalisable).
-6. Une parole d'espérance discrète.
-
-TON : calme, humble, patient. Toujours concret. Jamais pressé. Tu réponds en français.`;
+const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement et à l'action...`;
 
 document.getElementById('submitBtn').onclick = async function() {
     const situation = document.getElementById('situation').value.trim();
@@ -89,7 +32,8 @@ document.getElementById('submitBtn').onclick = async function() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                'Origin': 'https://justice-aide-ca.github.io'
             },
             body: JSON.stringify({
                 model: "gpt-4o-mini",
@@ -103,8 +47,7 @@ document.getElementById('submitBtn').onclick = async function() {
         });
         
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error?.message || "Erreur API");
+            throw new Error("Erreur API");
         }
         
         const data = await response.json();
@@ -123,5 +66,3 @@ document.getElementById('submitBtn').onclick = async function() {
     }
 };
 </script>
-</body>
-</html>
