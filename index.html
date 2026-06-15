@@ -13,7 +13,6 @@
         button { background: #4a6f5e; color: white; padding: 10px 20px; border: none; border-radius: 40px; cursor: pointer; font-size: 1rem; }
         .reponse-card { background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; margin-top: 20px; line-height: 1.5; }
         .loading { text-align: center; color: #4a6f5e; margin-top: 20px; }
-        .error { text-align: center; color: #c0392b; margin-top: 20px; font-size: 0.9rem; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
     </style>
 </head>
@@ -28,20 +27,13 @@
 
     <div id="reponse" class="reponse-card" style="display:none;"></div>
     <div id="loading" class="loading" style="display:none;">🕯️ Un instant...</div>
-    <div id="error" class="error" style="display:none;"></div>
 
     <footer>🔒 Rien n'est enregistré · 🕊️ Un compagnon silencieux</footer>
 </div>
 
 <script>
-// ============================================================
-// CONFIGURATION –  ""
-// ============================================================
-const OPENAI_API_KEY = "";  // Laissez vide pour utiliser seulement les réponses simulées
-// ============================================================
-
-// Fonction de réponse simulée (personnalisée selon le contexte)
-function getSimulatedResponse(situation, role) {
+// Fonction de réponse personnalisée selon la situation
+function getPersonalizedResponse(situation, role) {
     const lowerSituation = situation.toLowerCase();
     
     // Détection du rôle
@@ -54,17 +46,17 @@ function getSimulatedResponse(situation, role) {
     // Détection du sujet
     let sujet = "situation difficile";
     if (lowerSituation.includes("amm") || lowerSituation.includes("euthanasie") || lowerSituation.includes("mourir")) {
-        sujet = "aide médicale à mourir";
-    }
-    if (lowerSituation.includes("malade") || lowerSituation.includes("hopital")) {
-        sujet = "maladie grave";
-    }
-    if (lowerSituation.includes("conflit") || lowerSituation.includes("désaccord")) {
-        sujet = "conflit relationnel";
+        sujet = "l'aide médicale à mourir";
+    } else if (lowerSituation.includes("malade") || lowerSituation.includes("hopital")) {
+        sujet = "la maladie grave";
+    } else if (lowerSituation.includes("conflit") || lowerSituation.includes("désaccord")) {
+        sujet = "un conflit relationnel";
+    } else if (lowerSituation.includes("doute") || lowerSituation.includes("question")) {
+        sujet = "un doute profond";
     }
     
     return `<strong>1. Accueillons votre situation</strong><br><br>
-            En tant que ${userRole}, vous êtes confronté(e) à une situation concernant ${sujet}. C'est une situation lourde, et c'est normal que vous vous interrogiez.<br><br>
+            En tant que ${userRole}, vous êtes confronté(e) à ${sujet}. C'est une situation lourde, et c'est normal que vous vous interrogiez.<br><br>
             
             <strong>2. Ce qui bloque</strong><br><br>
             Vous êtes pris(e) entre plusieurs choses que vous ne contrôlez pas : votre conscience, votre foi, le regard des autres, ou les attentes institutionnelles.<br><br>
@@ -82,8 +74,7 @@ function getSimulatedResponse(situation, role) {
             Vous n'êtes pas seul(e). La vie est plus forte que la mort. L'amour est plus fort que tout. Et même dans l'incertitude, il y a une lumière qui ne s'éteint pas.`;
 }
 
-// Fonction principale
-document.getElementById('submitBtn').onclick = async function() {
+document.getElementById('submitBtn').onclick = function() {
     const situation = document.getElementById('situation').value.trim();
     const role = document.getElementById('role').value.trim();
     
@@ -94,79 +85,17 @@ document.getElementById('submitBtn').onclick = async function() {
     
     const reponseDiv = document.getElementById('reponse');
     const loadingDiv = document.getElementById('loading');
-    const errorDiv = document.getElementById('error');
     
     loadingDiv.style.display = 'block';
     reponseDiv.style.display = 'none';
-    errorDiv.style.display = 'none';
     document.getElementById('submitBtn').disabled = true;
     
-    // Si pas de clé API, utiliser directement la réponse simulée
-    if (!OPENAI_API_KEY || OPENAI_API_KEY === "") {
-        setTimeout(() => {
-            reponseDiv.innerHTML = getSimulatedResponse(situation, role);
-            reponseDiv.style.display = 'block';
-            loadingDiv.style.display = 'none';
-            document.getElementById('submitBtn').disabled = false;
-        }, 500);
-        return;
-    }
-    
-    // Tentative d'appel à l'API OpenAI
-    try {
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        
-        const SYSTEM_PROMPT = `Tu es « Ekklesia », un outil catholique d'aide au discernement.
-Tu accompagnes des personnes qui vivent une situation problématique.
-
-TA MÉTHODE (structure obligatoire) :
-1. Accueillir la situation et normaliser la tension.
-2. Aider à nommer ce qui bloque.
-3. Montrer où pourrait passer une petite liberté.
-4. Proposer le pas juste (ni trop, ni trop peu).
-5. Donner une action minuscule pour aujourd'hui.
-6. Une parole d'espérance discrète.
-
-TON : calme, humble, patient. Tu réponds en français.`;
-
-        const response = await fetch(proxyUrl + apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [
-                    { role: "system", content: SYSTEM_PROMPT },
-                    { role: "user", content: `Mon rôle : ${role || "non précisé"}\n\nMa situation : ${situation}` }
-                ],
-                temperature: 0.5,
-                max_tokens: 1200
-            })
-        });
-        
-        if (!response.ok) throw new Error("API indisponible");
-        
-        const data = await response.json();
-        const reponseTexte = data.choices[0].message.content;
-        
-        reponseDiv.innerHTML = reponseTexte.replace(/\n/g, '<br><br>');
+    setTimeout(() => {
+        reponseDiv.innerHTML = getPersonalizedResponse(situation, role);
         reponseDiv.style.display = 'block';
-        
-    } catch (error) {
-        // En cas d'erreur, réponse simulée
-        console.log("Utilisation de la réponse simulée");
-        reponseDiv.innerHTML = getSimulatedResponse(situation, role);
-        reponseDiv.style.display = 'block';
-        errorDiv.innerHTML = "💡 (Réponse simulée – IA non disponible pour le moment)";
-        errorDiv.style.display = 'block';
-        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
-    } finally {
         loadingDiv.style.display = 'none';
         document.getElementById('submitBtn').disabled = false;
-    }
+    }, 800);
 };
 </script>
 </body>
