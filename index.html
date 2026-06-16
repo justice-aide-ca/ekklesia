@@ -21,9 +21,9 @@
     <h1>⛪ Ekklesia</h1>
     <div class="sous-titre">Justice et Paix s'embrassent</div>
 
-    <textarea id="situation" rows="6" placeholder="Décrivez votre situation..."></textarea>
-    <input type="text" id="role" placeholder="Votre rôle (optionnel) – ex: prêtre, soignant, famille">
-    <button id="submitBtn">Recevoir une aide →</button>
+    <textarea id="situation" rows="6" placeholder="Décrivez votre situation, votre question, votre recherche de sens..."></textarea>
+    <input type="text" id="role" placeholder="Qui êtes-vous ? (optionnel) – ex: soignant, étudiant, parent, retraité, chercheur...">
+    <button id="submitBtn">Recevoir une aide au discernement →</button>
 
     <div id="reponse" class="reponse-card" style="display:none;"></div>
     <div id="loading" class="loading" style="display:none;">🕯️ Un instant...</div>
@@ -32,51 +32,9 @@
 </div>
 
 <script>
-// Fonction de réponse personnalisée selon la situation
-function getPersonalizedResponse(situation, role) {
-    const lowerSituation = situation.toLowerCase();
-    
-    // Détection du rôle
-    let userRole = role || "personne";
-    if (lowerSituation.includes("prêtre") || lowerSituation.includes("pretre")) userRole = "prêtre";
-    if (lowerSituation.includes("soignant") || lowerSituation.includes("infirmier")) userRole = "soignant";
-    if (lowerSituation.includes("famille") || lowerSituation.includes("parent")) userRole = "membre de la famille";
-    if (lowerSituation.includes("bénévole")) userRole = "bénévole";
-    
-    // Détection du sujet
-    let sujet = "situation difficile";
-    if (lowerSituation.includes("amm") || lowerSituation.includes("euthanasie") || lowerSituation.includes("mourir")) {
-        sujet = "l'aide médicale à mourir";
-    } else if (lowerSituation.includes("malade") || lowerSituation.includes("hopital")) {
-        sujet = "la maladie grave";
-    } else if (lowerSituation.includes("conflit") || lowerSituation.includes("désaccord")) {
-        sujet = "un conflit relationnel";
-    } else if (lowerSituation.includes("doute") || lowerSituation.includes("question")) {
-        sujet = "un doute profond";
-    }
-    
-    return `<strong>1. Accueillons votre situation</strong><br><br>
-            En tant que ${userRole}, vous êtes confronté(e) à ${sujet}. C'est une situation lourde, et c'est normal que vous vous interrogiez.<br><br>
-            
-            <strong>2. Ce qui bloque</strong><br><br>
-            Vous êtes pris(e) entre plusieurs choses que vous ne contrôlez pas : votre conscience, votre foi, le regard des autres, ou les attentes institutionnelles.<br><br>
-            
-            <strong>3. Une petite liberté possible</strong><br><br>
-            Il y a toujours un petit espace de liberté, même minuscule. Parfois, il suffit d'une présence silencieuse, d'une écoute sans jugement.<br><br>
-            
-            <strong>4. Le pas juste</strong><br><br>
-            Ni tout accepter par peur, ni tout refuser par rigidité. Le chemin juste est souvent entre deux extrêmes. Que dit votre cœur au plus profond ?<br><br>
-            
-            <strong>5. Action pour aujourd'hui</strong><br><br>
-            Une toute petite chose concrète : une parole, un silence, une présence. Ne cherchez pas à tout résoudre d'un coup.<br><br>
-            
-            <strong>6. Une parole d'espérance</strong><br><br>
-            Vous n'êtes pas seul(e). La vie est plus forte que la mort. L'amour est plus fort que tout. Et même dans l'incertitude, il y a une lumière qui ne s'éteint pas.`;
-}
-
 document.getElementById('submitBtn').onclick = function() {
     const situation = document.getElementById('situation').value.trim();
-    const role = document.getElementById('role').value.trim();
+    const roleInput = document.getElementById('role').value.trim();
     
     if (!situation) {
         alert("Veuillez décrire votre situation.");
@@ -91,11 +49,107 @@ document.getElementById('submitBtn').onclick = function() {
     document.getElementById('submitBtn').disabled = true;
     
     setTimeout(() => {
-        reponseDiv.innerHTML = getPersonalizedResponse(situation, role);
+        const lowerSituation = situation.toLowerCase();
+        
+        // === 1. DÉTECTION DU TYPE DE SITUATION ===
+        let theme = "";
+        let questionSpecifique = "";
+        let conseilSpecifique = "";
+        
+        if (lowerSituation.includes("amm") || lowerSituation.includes("euthanasie") || lowerSituation.includes("aide médicale à mourir") || lowerSituation.includes("mourir") || lowerSituation.includes("fin de vie")) {
+            theme = "une question de fin de vie";
+            questionSpecifique = "Quelle est votre place dans cette situation ? Que pouvez-vous faire, sans vous trahir, sans abandonner ?";
+            conseilSpecifique = "Il n'y a pas de bonne ou de mauvaise réponse universelle. Votre présence, votre écoute, votre humanité – c'est souvent cela qui compte le plus.";
+        }
+        else if (lowerSituation.includes("maladie") || lowerSituation.includes("souffrance") || lowerSituation.includes("douleur") || lowerSituation.includes("handicap")) {
+            theme = "la maladie ou la souffrance";
+            questionSpecifique = "Comment vivez-vous cette épreuve ? Qu'est-ce qui vous aide à tenir ?";
+            conseilSpecifique = "La souffrance isole. Cherchez une présence, une parole, un geste. Vous n'êtes pas obligé(e) de porter cela seul(e).";
+        }
+        else if (lowerSituation.includes("deuil") || lowerSituation.includes("mort") || lowerSituation.includes("perte") || lowerSituation.includes("disparition")) {
+            theme = "un deuil ou une perte";
+            questionSpecifique = "Quel est votre plus grand besoin aujourd'hui : être écouté, pleurer, parler, vous souvenir ?";
+            conseilSpecifique = "Le deuil prend le temps qu'il prend. Ne vous forcez pas à 'aller bien'. Votre chagrin est légitime.";
+        }
+        else if (lowerSituation.includes("conflit") || lowerSituation.includes("dispute") || lowerSituation.includes("brouille") || lowerSituation.includes("tension")) {
+            theme = "un conflit relationnel";
+            questionSpecifique = "Qu'est-ce qui est le plus important pour vous : avoir raison, ou retrouver la paix ?";
+            conseilSpecifique = "Parfois, un petit geste suffit. Une main tendue, un silence, un pardon même silencieux.";
+        }
+        else if (lowerSituation.includes("doute") || lowerSituation.includes("question") || lowerSituation.includes("pourquoi") || lowerSituation.includes("sens") || lowerSituation.includes("croire")) {
+            theme = "une question de sens ou une quête spirituelle";
+            questionSpecifique = "Qu'est-ce que vous cherchez vraiment ? Une réponse, une présence, un apaisement ?";
+            conseilSpecifique = "Le doute n'est pas une faiblesse. Il est souvent le signe que vous cherchez sincèrement. C'est un chemin, pas une impasse.";
+        }
+        else if (lowerSituation.includes("travail") || lowerSituation.includes("emploi") || lowerSituation.includes("licenciement") || lowerSituation.includes("carrière")) {
+            theme = "une situation professionnelle";
+            questionSpecifique = "Votre valeur se réduit-elle à votre travail ? Que voudriez-vous préserver, quoi qu'il arrive ?";
+            conseilSpecifique = "Un emploi se perd ou se trouve. Votre dignité, elle, ne dépend pas d'un contrat.";
+        }
+        else if (lowerSituation.includes("couple") || lowerSituation.includes("mariage") || lowerSituation.includes("amour") || lowerSituation.includes("divorce") || lowerSituation.includes("séparation")) {
+            theme = "une situation amoureuse ou conjugale";
+            questionSpecifique = "Dans cette relation, qu'est-ce qui vous nourrit ? Qu'est-ce qui vous épuise ?";
+            conseilSpecifique = "L'amour vrai ne fait pas souffrir gratuitement. Parfois, prendre du recul est nécessaire. Parfois, se rapprocher aussi.";
+        }
+        else if (lowerSituation.includes("enfant") || lowerSituation.includes("parent") || lowerSituation.includes("famille") || lowerSituation.includes("éducation")) {
+            theme = "une question familiale ou éducative";
+            questionSpecifique = "Quel est votre plus grand souhait pour cette personne qui vous est chère ?";
+            conseilSpecifique = "L'amour ne se prouve pas par la perfection, mais par la présence, la patience, l'écoute.";
+        }
+        else if (lowerSituation.includes("injustice") || lowerSituation.includes("discrimination") || lowerSituation.includes("violence")) {
+            theme = "une injustice subie ou témoignée";
+            questionSpecifique = "Que pouvez-vous faire, à votre échelle, sans vous mettre en danger ?";
+            conseilSpecifique = "Une petite action vaut mieux qu'une grande indignation silencieuse. Parfois, témoigner, c'est déjà agir.";
+        }
+        else {
+            theme = "une situation difficile";
+            questionSpecifique = "Qu'est-ce qui serait, pour vous, un premier pas possible, même tout petit ?";
+            conseilSpecifique = "Prenez une respiration. Une chose à la fois. Vous n'êtes pas obligé(e) de tout résoudre aujourd'hui.";
+        }
+        
+        // === 2. GÉNÉRATION DE LA RÉPONSE PERSONNALISÉE ===
+        let identite = roleInput ? `Vous avez dit être ${roleInput}.` : "Vous êtes une personne en recherche, en questionnement, en chemin.";
+        
+        let reponse = `<strong>1. Accueillons votre situation</strong><br><br>
+                ${identite}<br>
+                Vous traversez actuellement ${theme}. Voici ce que vous avez partagé :<br>
+                <em>« ${situation.substring(0, 200)}${situation.length > 200 ? '...' : ''} »</em><br><br>
+                Cette situation est réelle, et elle vous pèse. C'est normal. Vous n'êtes pas faible ni anormal pour ressentir cela.<br><br>
+                
+                <strong>2. Ce qui peut vous bloquer</strong><br><br>
+                Vous êtes probablement pris(e) entre plusieurs choses : ce que vous voudriez faire, ce que vous pouvez faire, ce que les autres attendent, ce que vous croyez devoir faire.<br>
+                Parfois, on se bloque tout seul. Parfois, ce sont les circonstances. Parfois, c'est la peur de mal faire.<br><br>
+                
+                <strong>3. Une petite liberté possible</strong><br><br>
+                ${conseilSpecifique}<br><br>
+                Il y a toujours un petit espace de liberté, même minuscule. Une parole qu'on n'a pas encore dite, un silence qu'on n'a pas encore pris, un geste qu'on n'a pas encore osé.<br><br>
+                
+                <strong>4. Le pas juste pour vous</strong><br><br>
+                Ni tout subir, ni tout rejeter. Ni se sacrifier, ni abandonner les autres. Le chemin juste est souvent entre deux extrêmes.<br>
+                Posez-vous cette question, sans vous presser :<br>
+                <em>« ${questionSpecifique} »</em><br><br>
+                
+                <strong>5. Une action minuscule pour aujourd'hui</strong><br><br>
+                Pas besoin de tout résoudre. Juste une petite chose.<br>
+                ▸ Écrire ce qui vous pèse (sur un papier, dans un coin)<br>
+                ▸ Parler à une personne de confiance (même un message)<br>
+                ▸ Prendre cinq minutes de silence, sans écran, sans rien<br>
+                ▸ Faire un geste simple pour vous-même (marcher, respirer, boire un thé)<br><br>
+                
+                <strong>6. Une parole d'espérance (pour tous, croyants ou non)</strong><br><br>
+                Vous n'êtes pas seul(e).<br>
+                La vie est plus forte que ce qui vous arrive aujourd'hui.<br>
+                Et même dans l'incertitude, il y a une lumière – parfois juste au fond de vous, parfois chez quelqu'un d'autre, parfois dans un geste simple.<br><br>
+                <em>« Ce qui compte, ce n'est pas d'avoir toutes les réponses, mais de continuer à chercher. »</em><br><br>
+                
+                <strong>📌 Pour aller plus loin</strong><br>
+                Si vous le souhaitez, vous pouvez partager cette réponse avec une personne de confiance, ou la relire dans quelques jours. Parfois, le sens vient lentement.`;
+        
+        reponseDiv.innerHTML = reponse;
         reponseDiv.style.display = 'block';
         loadingDiv.style.display = 'none';
         document.getElementById('submitBtn').disabled = false;
-    }, 800);
+    }, 600);
 };
 </script>
 </body>
