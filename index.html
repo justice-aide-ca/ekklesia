@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,6 +15,8 @@
         .reponse-card { background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; margin-top: 20px; line-height: 1.5; }
         .loading { text-align: center; color: #4a6f5e; margin-top: 20px; }
         .invitation { background: #f0ede8; padding: 12px; border-radius: 12px; margin: 15px 0; font-style: italic; color: #4a3b2c; }
+        .citation { margin: 10px 0; padding-left: 15px; border-left: 2px solid #c4b8a8; font-style: italic; color: #6b5e4e; }
+        .sagesse { background: #faf6ef; padding: 12px; border-radius: 12px; margin: 10px 0; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
     </style>
 </head>
@@ -23,7 +26,7 @@
     <div class="sous-titre">Justice et Paix s'embrassent</div>
 
     <textarea id="situation" rows="6" placeholder="Décrivez votre situation, votre question, votre recherche de sens..."></textarea>
-    <input type="text" id="role" placeholder="Qui êtes-vous ? (optionnel) – ex: soignant, étudiant, parent, retraité, chercheur...">
+    <input type="text" id="role" placeholder="Qui êtes-vous ? (optionnel)">
     <button id="submitBtn">Recevoir une aide au discernement →</button>
 
     <div id="reponse" class="reponse-card" style="display:none;"></div>
@@ -56,61 +59,119 @@ document.getElementById('submitBtn').onclick = function() {
         let theme = "";
         let questionSpecifique = "";
         let conseilSpecifique = "";
+        let citationJesus = "";
+        let citationAugustin = "";
+        let citationThomas = "";
+        let citationTherese = "";
+        let citationJeanCroix = "";
+        let citationFrancois = "";
+        let citationRatzinger = "";
+        let citationFoucauld = "";
+        let citationWeil = "";
+        let citationDesert = "";
         
+        // === FIN DE VIE / EUTHANASIE ===
         if (lowerSituation.includes("amm") || lowerSituation.includes("euthanasie") || lowerSituation.includes("aide médicale à mourir") || lowerSituation.includes("mourir") || lowerSituation.includes("fin de vie")) {
             theme = "une question de fin de vie";
             questionSpecifique = "Quelle est votre place dans cette situation ? Que pouvez-vous faire, sans vous trahir, sans abandonner ?";
             conseilSpecifique = "Il n'y a pas de bonne ou de mauvaise réponse universelle. Votre présence, votre écoute, votre humanité – c'est souvent cela qui compte le plus.";
+            citationJesus = "« Aujourd'hui, tu seras avec moi dans le Paradis. » (Luc 23,43) – La miséricorde va plus loin que nos limites.";
+            citationAugustin = "« Notre cœur est sans repos tant qu'il ne repose en Toi. » – Saint Augustin";
+            citationTherese = "« Tout est grâce. » – Sainte Thérèse de Lisieux";
+            citationRatzinger = "« La mort n'est pas la fin, mais un passage. » – Benoît XVI";
         }
-        else if (lowerSituation.includes("maladie") || lowerSituation.includes("souffrance") || lowerSituation.includes("douleur") || lowerSituation.includes("handicap")) {
-            theme = "la maladie ou la souffrance";
-            questionSpecifique = "Comment vivez-vous cette épreuve ? Qu'est-ce qui vous aide à tenir ?";
-            conseilSpecifique = "La souffrance isole. Cherchez une présence, une parole, un geste. Vous n'êtes pas obligé(e) de porter cela seul(e).";
-        }
+        // === DEUIL / PERTE ===
         else if (lowerSituation.includes("deuil") || lowerSituation.includes("mort") || lowerSituation.includes("perte") || lowerSituation.includes("disparition")) {
             theme = "un deuil ou une perte";
             questionSpecifique = "Quel est votre plus grand besoin aujourd'hui : être écouté, pleurer, parler, vous souvenir ?";
             conseilSpecifique = "Le deuil prend le temps qu'il prend. Ne vous forcez pas à 'aller bien'. Votre chagrin est légitime.";
+            citationJesus = "« Heureux les affligés, car ils seront consolés. » (Matthieu 5,4)";
+            citationTherese = "« Je veux passer mon ciel à faire du bien sur la terre. » – Sainte Thérèse de Lisieux";
+            citationRatzinger = "« La foi n'est pas une opinion, c'est une rencontre. Et cette rencontre, la mort ne peut la défaire. » – Benoît XVI";
+            citationFoucauld = "« Il n'y a pas de plus grande joie que celle d'être pauvre, petit, abandonné entre les mains de Dieu. » – Charles de Foucauld";
         }
-        else if (lowerSituation.includes("conflit") || lowerSituation.includes("dispute") || lowerSituation.includes("brouille") || lowerSituation.includes("tension")) {
-            theme = "un conflit relationnel";
-            questionSpecifique = "Qu'est-ce qui est le plus important pour vous : avoir raison, ou retrouver la paix ?";
-            conseilSpecifique = "Parfois, un petit geste suffit. Une main tendue, un silence, un pardon même silencieux.";
-        }
+        // === DOUTE / QUESTION DE SENS ===
         else if (lowerSituation.includes("doute") || lowerSituation.includes("question") || lowerSituation.includes("pourquoi") || lowerSituation.includes("sens") || lowerSituation.includes("croire")) {
             theme = "une question de sens ou une quête spirituelle";
             questionSpecifique = "Qu'est-ce que vous cherchez vraiment ? Une réponse, une présence, un apaisement ?";
             conseilSpecifique = "Le doute n'est pas une faiblesse. Il est souvent le signe que vous cherchez sincèrement. C'est un chemin, pas une impasse.";
+            citationJesus = "« Cherchez et vous trouverez. » (Matthieu 7,7)";
+            citationAugustin = "« Comprends pour croire, crois pour comprendre. » – Saint Augustin";
+            citationJeanCroix = "« Pour aller où tu ne vas pas, il faut passer où tu ne vas pas. » – Saint Jean de la Croix";
+            citationWeil = "« L'amour de Dieu est pur lorsqu'il ne demande rien. » – Simone Weil";
+            citationRatzinger = "« Le doute est le compagnon de route de la foi. » – Benoît XVI";
         }
+        // === SOUFFRANCE / MALADIE ===
+        else if (lowerSituation.includes("maladie") || lowerSituation.includes("souffrance") || lowerSituation.includes("douleur") || lowerSituation.includes("handicap")) {
+            theme = "la maladie ou la souffrance";
+            questionSpecifique = "Comment vivez-vous cette épreuve ? Qu'est-ce qui vous aide à tenir ?";
+            conseilSpecifique = "La souffrance isole. Cherchez une présence, une parole, un geste. Vous n'êtes pas obligé(e) de porter cela seul(e).";
+            citationJesus = "« Venez à moi, vous tous qui peinez et ployez sous le fardeau, et je vous donnerai le repos. » (Matthieu 11,28)";
+            citationTherese = "« La souffrance m'a soulevée au-dessus d'elle-même. » – Sainte Thérèse de Lisieux";
+            citationWeil = "« La souffrance est la plus grande des preuves de l'amour. » – Simone Weil";
+            citationFoucauld = "« Offrir sa souffrance, c'est la transformer en amour. » – Charles de Foucauld";
+        }
+        // === CONFLIT ===
+        else if (lowerSituation.includes("conflit") || lowerSituation.includes("dispute") || lowerSituation.includes("brouille") || lowerSituation.includes("tension")) {
+            theme = "un conflit relationnel";
+            questionSpecifique = "Qu'est-ce qui est le plus important pour vous : avoir raison, ou retrouver la paix ?";
+            conseilSpecifique = "Parfois, un petit geste suffit. Une main tendue, un silence, un pardon même silencieux.";
+            citationJesus = "« Heureux les artisans de paix, car ils seront appelés fils de Dieu. » (Matthieu 5,9)";
+            citationFrancois = "« Seigneur, fais de moi un instrument de ta paix. » – Saint François d'Assise";
+            citationAugustin = "« Aime et fais ce que tu veux. » – Saint Augustin";
+            citationKentenich = "« La confiance filiale est la clé de tout. » – Joseph Kentenich";
+        }
+        // === TRAVAIL / CARRIÈRE ===
         else if (lowerSituation.includes("travail") || lowerSituation.includes("emploi") || lowerSituation.includes("licenciement") || lowerSituation.includes("carrière")) {
             theme = "une situation professionnelle";
             questionSpecifique = "Votre valeur se réduit-elle à votre travail ? Que voudriez-vous préserver, quoi qu'il arrive ?";
             conseilSpecifique = "Un emploi se perd ou se trouve. Votre dignité, elle, ne dépend pas d'un contrat.";
+            citationJesus = "« Ne vous inquiétez pas pour demain. » (Matthieu 6,34)";
+            citationThomas = "« La grâce ne détruit pas la nature, elle l'accomplit. » – Saint Thomas d'Aquin";
+            citationFoucauld = "« Crier l'Évangile par toute sa vie. » – Charles de Foucauld";
         }
+        // === COUPLE / AMOUR ===
         else if (lowerSituation.includes("couple") || lowerSituation.includes("mariage") || lowerSituation.includes("amour") || lowerSituation.includes("divorce") || lowerSituation.includes("séparation")) {
             theme = "une situation amoureuse ou conjugale";
             questionSpecifique = "Dans cette relation, qu'est-ce qui vous nourrit ? Qu'est-ce qui vous épuise ?";
             conseilSpecifique = "L'amour vrai ne fait pas souffrir gratuitement. Parfois, prendre du recul est nécessaire. Parfois, se rapprocher aussi.";
+            citationJesus = "« Ce que Dieu a uni, que l'homme ne le sépare pas. » (Marc 10,9)";
+            citationAugustin = "« Aimer, c'est vouloir le bien de l'autre. » – Saint Augustin";
+            citationFrancois = "« L'amour n'est pas aimé. » – Saint François d'Assise";
+            citationKentenich = "« L'amour est la plus haute des vocations. » – Joseph Kentenich";
         }
+        // === FAMILLE / ÉDUCATION ===
         else if (lowerSituation.includes("enfant") || lowerSituation.includes("parent") || lowerSituation.includes("famille") || lowerSituation.includes("éducation")) {
             theme = "une question familiale ou éducative";
             questionSpecifique = "Quel est votre plus grand souhait pour cette personne qui vous est chère ?";
             conseilSpecifique = "L'amour ne se prouve pas par la perfection, mais par la présence, la patience, l'écoute.";
+            citationJesus = "« Laissez les petits enfants venir à moi. » (Marc 10,14)";
+            citationTherese = "« Ma vocation, c'est l'Amour. » – Sainte Thérèse de Lisieux";
+            citationDesert = "« Assieds-toi dans ta cellule, et elle t'enseignera tout. » – Pères du désert";
         }
+        // === INJUSTICE ===
         else if (lowerSituation.includes("injustice") || lowerSituation.includes("discrimination") || lowerSituation.includes("violence")) {
             theme = "une injustice subie ou témoignée";
             questionSpecifique = "Que pouvez-vous faire, à votre échelle, sans vous mettre en danger ?";
             conseilSpecifique = "Une petite action vaut mieux qu'une grande indignation silencieuse. Parfois, témoigner, c'est déjà agir.";
+            citationJesus = "« Heureux ceux qui ont faim et soif de justice. » (Matthieu 5,6)";
+            citationAugustin = "« La justice sans la miséricorde est une cruauté. » – Saint Augustin";
+            citationFrancois = "« La paix que vous donnez, vous la recevez. » – Saint François d'Assise";
+            citationWeil = "« Le mal, ce n'est pas de souffrir, c'est de faire souffrir. » – Simone Weil";
         }
+        // === DÉFAUT (générique) ===
         else {
             theme = "une situation difficile";
             questionSpecifique = "Qu'est-ce qui serait, pour vous, un premier pas possible, même tout petit ?";
             conseilSpecifique = "Prenez une respiration. Une chose à la fois. Vous n'êtes pas obligé(e) de tout résoudre aujourd'hui.";
+            citationJesus = "« Je suis le chemin, la vérité et la vie. » (Jean 14,6)";
+            citationAugustin = "« Le Seigneur est proche de ceux qui ont le cœur brisé. »";
+            citationDesert = "« Va, assieds-toi dans ta cellule, et elle t'enseignera tout. » – Pères du désert";
         }
         
         let identite = roleInput ? `Vous vous présentez comme ${roleInput}.` : "Vous êtes une personne en recherche, en questionnement, en chemin.";
         
-        // === GÉNÉRATION DE LA RÉPONSE AVEC MONBOURQUETTE & ZUNDEL ===
+        // === GÉNÉRATION DE LA RÉPONSE ===
         let reponse = `
             <div class="invitation">
                 🌱 « Avant toute recherche, accueille-toi toi-même. Tu as le droit d'être là, avec tes fragilités, tes doutes, tes blessures. » <em>– Jean Monbourquette</em>
@@ -122,6 +183,10 @@ document.getElementById('submitBtn').onclick = function() {
             <em>« ${situation.substring(0, 200)}${situation.length > 200 ? '...' : ''} »</em><br><br>
             Cette situation est réelle, et elle vous pèse. C'est normal. Vous n'êtes ni faible ni anormal pour ressentir cela.<br><br>
             
+            <div class="citation">
+                ✝️ ${citationJesus}
+            </div>
+            
             <strong>2. Prendre le temps de l'écoute intérieure (Maurice Zundel)</strong><br><br>
             <div class="invitation">
                 🕯️ « Fais silence en toi. Écoute ce qui émerge du fond de ton être. Là, sans bruit, quelque chose de plus grand cherche à naître. » <em>– Maurice Zundel</em>
@@ -130,21 +195,33 @@ document.getElementById('submitBtn').onclick = function() {
             Écoute en toi : qu'est-ce qui est vraiment vivant ? Une émotion, une image, un mot, un silence ?<br>
             Ne juge pas ce qui vient. Accueille-le.<br><br>
             
-            <strong>3. Ce qui peut vous bloquer (et comment l'accueillir)</strong><br><br>
+            <strong>3. Une sagesse pour ton chemin</strong><br><br>
+            <div class="sagesse">
+                📖 ${citationAugustin}<br><br>
+                📖 ${citationTherese || citationThomas || citationJeanCroix || "« L'essentiel est invisible pour les yeux. » – Saint-Exupéry"}<br><br>
+                ${citationFrancois ? `📖 ${citationFrancois}<br><br>` : ""}
+                ${citationRatzinger ? `📖 ${citationRatzinger}<br><br>` : ""}
+                ${citationWeil ? `📖 ${citationWeil}<br><br>` : ""}
+                ${citationFoucauld ? `📖 ${citationFoucauld}<br><br>` : ""}
+                ${citationKentenich ? `📖 ${citationKentenich}<br><br>` : ""}
+                ${citationDesert ? `📖 ${citationDesert}<br><br>` : ""}
+            </div>
+            
+            <strong>4. Ce qui peut vous bloquer (et comment l'accueillir)</strong><br><br>
             Vous êtes probablement pris(e) entre plusieurs choses : ce que vous voudriez faire, ce que vous pouvez faire, ce que les autres attendent, ce que vous croyez devoir faire.<br>
             Monbourquette nous rappelle : « Tu n'es pas ce que tu fais. Tu es plus grand que tes actes, plus grand que tes chutes. »<br>
             Ne réduis pas ton être à cette situation. Tu as de la valeur, quoi qu'il arrive.<br><br>
             
-            <strong>4. Une petite liberté possible</strong><br><br>
+            <strong>5. Une petite liberté possible</strong><br><br>
             ${conseilSpecifique}<br><br>
             Il y a toujours un petit espace de liberté, même minuscule. Une parole qu'on n'a pas encore dite, un silence qu'on n'a pas encore pris, un geste qu'on n'a pas encore osé.<br><br>
             
-            <strong>5. Le pas juste pour vous</strong><br><br>
+            <strong>6. Le pas juste pour vous</strong><br><br>
             Ni tout subir, ni tout rejeter. Ni se sacrifier, ni abandonner les autres. Le chemin juste est souvent entre deux extrêmes.<br>
             Posez-vous cette question, sans vous presser :<br>
             <em>« ${questionSpecifique} »</em><br><br>
             
-            <strong>6. Une action minuscule pour aujourd'hui (Zundel – le déploiement)</strong><br><br>
+            <strong>7. Une action minuscule pour aujourd'hui (Zundel – le déploiement)</strong><br><br>
             Zundel disait : « Chaque être est une promesse de Dieu. » Une toute petite chose que vous pouvez faire pour vous déployer, pour être plus vous-même aujourd'hui :<br>
             ▸ Écrire ce qui vous pèse (sur un papier, dans un coin)<br>
             ▸ Parler à une personne de confiance (même un message)<br>
@@ -152,13 +229,16 @@ document.getElementById('submitBtn').onclick = function() {
             ▸ Faire un geste simple pour vous-même (marcher, respirer, boire un thé)<br>
             ▸ Relire cette réponse dans quelques jours – parfois, le sens vient lentement<br><br>
             
-            <strong>7. Une parole d'espérance</strong><br><br>
+            <strong>8. Une parole d'espérance</strong><br><br>
             Monbourquette : « Tu es aimé, non pas parce que tu es parfait, mais parce que tu es toi. »<br>
             Zundel : « Dieu n'attend pas ta perfection, il attend ton cœur. »<br><br>
             Vous n'êtes pas seul(e). La vie est plus forte que ce qui vous arrive aujourd'hui.<br>
             Et même dans l'incertitude, il y a une lumière – parfois juste au fond de vous, parfois chez quelqu'un d'autre, parfois dans un geste simple.<br><br>
             
-            <em>« Ce qui compte, ce n'est pas d'avoir toutes les réponses, mais de continuer à marcher. »</em>`;
+            <em>« Ce qui compte, ce n'est pas d'avoir toutes les réponses, mais de continuer à marcher. »</em><br><br>
+            
+            <hr>
+            <small>📚 Sources spirituelles : Jésus Christ, Saint Augustin, Saint Thomas d'Aquin, Saint Jean de la Croix, Sainte Thérèse de Lisieux, Saint François d'Assise, Benoît XVI, Joseph Kentenich, Charles de Foucauld, Simone Weil, Pères du désert.</small>`;
         
         reponseDiv.innerHTML = reponse;
         reponseDiv.style.display = 'block';
