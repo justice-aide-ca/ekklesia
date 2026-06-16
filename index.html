@@ -13,6 +13,7 @@
         button { background: #4a6f5e; color: white; padding: 10px 20px; border: none; border-radius: 40px; cursor: pointer; font-size: 1rem; }
         .reponse-card { background: #fefaf5; padding: 15px; border-left: 4px solid #4a6f5e; margin-top: 20px; line-height: 1.5; }
         .loading { text-align: center; color: #4a6f5e; margin-top: 20px; }
+        .invitation { background: #f0ede8; padding: 12px; border-radius: 12px; margin: 15px 0; font-style: italic; color: #4a3b2c; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
     </style>
 </head>
@@ -51,7 +52,7 @@ document.getElementById('submitBtn').onclick = function() {
     setTimeout(() => {
         const lowerSituation = situation.toLowerCase();
         
-        // === 1. DÉTECTION DU TYPE DE SITUATION ===
+        // === DÉTECTION DU THÈME ===
         let theme = "";
         let questionSpecifique = "";
         let conseilSpecifique = "";
@@ -107,49 +108,63 @@ document.getElementById('submitBtn').onclick = function() {
             conseilSpecifique = "Prenez une respiration. Une chose à la fois. Vous n'êtes pas obligé(e) de tout résoudre aujourd'hui.";
         }
         
-        // === 2. GÉNÉRATION DE LA RÉPONSE PERSONNALISÉE ===
-        let identite = roleInput ? `Vous avez dit être ${roleInput}.` : "Vous êtes une personne en recherche, en questionnement, en chemin.";
+        let identite = roleInput ? `Vous vous présentez comme ${roleInput}.` : "Vous êtes une personne en recherche, en questionnement, en chemin.";
         
-        let reponse = `<strong>1. Accueillons votre situation</strong><br><br>
-                ${identite}<br>
-                Vous traversez actuellement ${theme}. Voici ce que vous avez partagé :<br>
-                <em>« ${situation.substring(0, 200)}${situation.length > 200 ? '...' : ''} »</em><br><br>
-                Cette situation est réelle, et elle vous pèse. C'est normal. Vous n'êtes pas faible ni anormal pour ressentir cela.<br><br>
-                
-                <strong>2. Ce qui peut vous bloquer</strong><br><br>
-                Vous êtes probablement pris(e) entre plusieurs choses : ce que vous voudriez faire, ce que vous pouvez faire, ce que les autres attendent, ce que vous croyez devoir faire.<br>
-                Parfois, on se bloque tout seul. Parfois, ce sont les circonstances. Parfois, c'est la peur de mal faire.<br><br>
-                
-                <strong>3. Une petite liberté possible</strong><br><br>
-                ${conseilSpecifique}<br><br>
-                Il y a toujours un petit espace de liberté, même minuscule. Une parole qu'on n'a pas encore dite, un silence qu'on n'a pas encore pris, un geste qu'on n'a pas encore osé.<br><br>
-                
-                <strong>4. Le pas juste pour vous</strong><br><br>
-                Ni tout subir, ni tout rejeter. Ni se sacrifier, ni abandonner les autres. Le chemin juste est souvent entre deux extrêmes.<br>
-                Posez-vous cette question, sans vous presser :<br>
-                <em>« ${questionSpecifique} »</em><br><br>
-                
-                <strong>5. Une action minuscule pour aujourd'hui</strong><br><br>
-                Pas besoin de tout résoudre. Juste une petite chose.<br>
-                ▸ Écrire ce qui vous pèse (sur un papier, dans un coin)<br>
-                ▸ Parler à une personne de confiance (même un message)<br>
-                ▸ Prendre cinq minutes de silence, sans écran, sans rien<br>
-                ▸ Faire un geste simple pour vous-même (marcher, respirer, boire un thé)<br><br>
-                
-                <strong>6. Une parole d'espérance (pour tous, croyants ou non)</strong><br><br>
-                Vous n'êtes pas seul(e).<br>
-                La vie est plus forte que ce qui vous arrive aujourd'hui.<br>
-                Et même dans l'incertitude, il y a une lumière – parfois juste au fond de vous, parfois chez quelqu'un d'autre, parfois dans un geste simple.<br><br>
-                <em>« Ce qui compte, ce n'est pas d'avoir toutes les réponses, mais de continuer à chercher. »</em><br><br>
-                
-                <strong>📌 Pour aller plus loin</strong><br>
-                Si vous le souhaitez, vous pouvez partager cette réponse avec une personne de confiance, ou la relire dans quelques jours. Parfois, le sens vient lentement.`;
+        // === GÉNÉRATION DE LA RÉPONSE AVEC MONBOURQUETTE & ZUNDEL ===
+        let reponse = `
+            <div class="invitation">
+                🌱 « Avant toute recherche, accueille-toi toi-même. Tu as le droit d'être là, avec tes fragilités, tes doutes, tes blessures. » <em>– Jean Monbourquette</em>
+            </div>
+            
+            <strong>1. Accueillons ce que vous vivez</strong><br><br>
+            ${identite}<br>
+            Vous traversez actuellement ${theme}. Voici ce que vous avez partagé :<br>
+            <em>« ${situation.substring(0, 200)}${situation.length > 200 ? '...' : ''} »</em><br><br>
+            Cette situation est réelle, et elle vous pèse. C'est normal. Vous n'êtes ni faible ni anormal pour ressentir cela.<br><br>
+            
+            <strong>2. Prendre le temps de l'écoute intérieure (Maurice Zundel)</strong><br><br>
+            <div class="invitation">
+                🕯️ « Fais silence en toi. Écoute ce qui émerge du fond de ton être. Là, sans bruit, quelque chose de plus grand cherche à naître. » <em>– Maurice Zundel</em>
+            </div>
+            Avant de chercher une solution, pose-toi quelques instants. Ferme les yeux si tu le peux. Respire profondément.<br>
+            Écoute en toi : qu'est-ce qui est vraiment vivant ? Une émotion, une image, un mot, un silence ?<br>
+            Ne juge pas ce qui vient. Accueille-le.<br><br>
+            
+            <strong>3. Ce qui peut vous bloquer (et comment l'accueillir)</strong><br><br>
+            Vous êtes probablement pris(e) entre plusieurs choses : ce que vous voudriez faire, ce que vous pouvez faire, ce que les autres attendent, ce que vous croyez devoir faire.<br>
+            Monbourquette nous rappelle : « Tu n'es pas ce que tu fais. Tu es plus grand que tes actes, plus grand que tes chutes. »<br>
+            Ne réduis pas ton être à cette situation. Tu as de la valeur, quoi qu'il arrive.<br><br>
+            
+            <strong>4. Une petite liberté possible</strong><br><br>
+            ${conseilSpecifique}<br><br>
+            Il y a toujours un petit espace de liberté, même minuscule. Une parole qu'on n'a pas encore dite, un silence qu'on n'a pas encore pris, un geste qu'on n'a pas encore osé.<br><br>
+            
+            <strong>5. Le pas juste pour vous</strong><br><br>
+            Ni tout subir, ni tout rejeter. Ni se sacrifier, ni abandonner les autres. Le chemin juste est souvent entre deux extrêmes.<br>
+            Posez-vous cette question, sans vous presser :<br>
+            <em>« ${questionSpecifique} »</em><br><br>
+            
+            <strong>6. Une action minuscule pour aujourd'hui (Zundel – le déploiement)</strong><br><br>
+            Zundel disait : « Chaque être est une promesse de Dieu. » Une toute petite chose que vous pouvez faire pour vous déployer, pour être plus vous-même aujourd'hui :<br>
+            ▸ Écrire ce qui vous pèse (sur un papier, dans un coin)<br>
+            ▸ Parler à une personne de confiance (même un message)<br>
+            ▸ Prendre cinq minutes de silence, sans écran, sans rien<br>
+            ▸ Faire un geste simple pour vous-même (marcher, respirer, boire un thé)<br>
+            ▸ Relire cette réponse dans quelques jours – parfois, le sens vient lentement<br><br>
+            
+            <strong>7. Une parole d'espérance</strong><br><br>
+            Monbourquette : « Tu es aimé, non pas parce que tu es parfait, mais parce que tu es toi. »<br>
+            Zundel : « Dieu n'attend pas ta perfection, il attend ton cœur. »<br><br>
+            Vous n'êtes pas seul(e). La vie est plus forte que ce qui vous arrive aujourd'hui.<br>
+            Et même dans l'incertitude, il y a une lumière – parfois juste au fond de vous, parfois chez quelqu'un d'autre, parfois dans un geste simple.<br><br>
+            
+            <em>« Ce qui compte, ce n'est pas d'avoir toutes les réponses, mais de continuer à marcher. »</em>`;
         
         reponseDiv.innerHTML = reponse;
         reponseDiv.style.display = 'block';
         loadingDiv.style.display = 'none';
         document.getElementById('submitBtn').disabled = false;
-    }, 600);
+    }, 800);
 };
 </script>
 </body>
