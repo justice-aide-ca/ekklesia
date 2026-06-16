@@ -17,6 +17,7 @@
         .citation { margin: 10px 0; padding-left: 15px; border-left: 2px solid #c4b8a8; font-style: italic; color: #6b5e4e; }
         .sagesse { background: #faf6ef; padding: 12px; border-radius: 12px; margin: 10px 0; }
         .ressources { background: #f0f2f5; padding: 12px; border-radius: 12px; margin: 15px 0; font-size: 0.9rem; }
+        .penseur { background: #e8eef2; padding: 12px; border-radius: 12px; margin: 15px 0; border-left: 4px solid #4a6f5e; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
         
         /* Lecteur audio spirituel */
@@ -136,7 +137,12 @@ document.getElementById('submitBtn').onclick = function() {
         // Citations Jésus
         let citationJesus = "";
         
-        // Magistère (Papes, Catéchisme)
+        // Grands penseurs
+        let citationPenseur = "";
+        let penseurNom = "";
+        let penseurExplication = "";
+        
+        // Magistère
         let citationMagistere = "";
         let referenceCEC = "";
         
@@ -154,11 +160,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Quelle est votre place dans cette situation ? Que pouvez-vous faire, sans vous trahir, sans abandonner ?";
             conseilSpecifique = "Il n'y a pas de bonne ou de mauvaise réponse universelle. Votre présence, votre écoute, votre humanité – c'est souvent cela qui compte le plus.";
             citationJesus = "« Aujourd'hui, tu seras avec moi dans le Paradis. » (Luc 23,43) – La miséricorde va plus loin que nos limites.";
-            citationMagistere = "« La vie humaine est sacrée dès son commencement. » – Catéchisme de l'Église catholique (CEC 2258) / Pape François : « La miséricorde est le nom de Dieu. »";
+            
+            citationPenseur = "« Le visage d'autrui m'appelle à une responsabilité infinie. »";
+            penseurNom = "Emmanuel Levinas (philosophe)";
+            penseurExplication = "La vulnérabilité du prochain est le fondement de l'éthique. Même dans la mort, la responsabilité pour l'autre demeure.";
+            
+            citationMagistere = "« La vie humaine est sacrée dès son commencement. » – Catéchisme (CEC 2258) / Pape François : « La miséricorde est le nom de Dieu. »";
             referenceCEC = "CEC 2258-2279 : Respect de la vie humaine, refus de l'euthanasie, soins palliatifs.";
-            citationPsycho = "« L'écoute inconditionnelle permet à l'autre de se reconstruire, même dans l'épreuve de la mort. » – Carl Rogers";
+            citationPsycho = "« L'écoute inconditionnelle permet à l'autre de se reconstruire. » – Carl Rogers";
             auteurPsycho = "Carl Rogers (psychologie humaniste)";
-            citationJustice = "« Droit à la vie, à la liberté et à la sécurité. » – Charte canadienne des droits et libertés / Déclaration universelle des droits de l'homme (art. 3)";
+            citationJustice = "« Droit à la vie, à la liberté et à la sécurité. » – Charte canadienne / Déclaration universelle (art. 3)";
             referenceDroit = "Loi sur l'AMM (Canada, 2016) : clause de conscience pour les soignants / Arrêt Carter c. Canada (2015)";
         }
         // === DEUIL / PERTE ===
@@ -167,12 +178,17 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Quel est votre plus grand besoin aujourd'hui : être écouté, pleurer, parler, vous souvenir ?";
             conseilSpecifique = "Le deuil prend le temps qu'il prend. Ne vous forcez pas à 'aller bien'. Votre chagrin est légitime.";
             citationJesus = "« Heureux les affligés, car ils seront consolés. » (Matthieu 5,4)";
+            
+            citationPenseur = "« Le deuil est le prix de l'amour. » / « L'amour que nous portons à quelqu'un devient une présence intérieure. »";
+            penseurNom = "C.S. Lewis (auteur de « Une peine observée »)";
+            penseurExplication = "Le deuil n'est pas une pathologie à guérir, mais un chemin à parcourir. L'amour ne meurt pas avec la personne aimée.";
+            
             citationMagistere = "« La mort n'est pas la fin, mais un passage. » – Benoît XVI / « La résurrection du Christ est notre espérance. » – Pape François";
             referenceCEC = "CEC 1680-1690 : Les funérailles chrétiennes, l'espérance de la résurrection.";
-            citationPsycho = "« Le deuil est le prix de l'amour. » – Elisabeth Kübler-Ross / « Il n'y a pas de deuil sans amour. » – Jean Vanier";
+            citationPsycho = "« Le deuil est le prix de l'amour. » – Elisabeth Kübler-Ross";
             auteurPsycho = "Elisabeth Kübler-Ross (psychiatre, pionnière des soins palliatifs)";
-            citationJustice = "« Droit au respect de la vie privée et familiale. » – Charte canadienne / « Droit à la dignité dans la mort. » – Déclaration universelle";
-            referenceDroit = "Loi sur les successions / Congé de deuil au Canada (normes du travail)";
+            citationJustice = "« Droit au respect de la vie privée et familiale. » – Charte canadienne";
+            referenceDroit = "Loi sur les successions / Congé de deuil au Canada";
         }
         // === DOUTE / QUESTION DE SENS ===
         else if (lowerSituation.includes("doute") || lowerSituation.includes("question") || lowerSituation.includes("pourquoi") || lowerSituation.includes("sens") || lowerSituation.includes("croire")) {
@@ -180,12 +196,17 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Qu'est-ce que vous cherchez vraiment ? Une réponse, une présence, un apaisement ?";
             conseilSpecifique = "Le doute n'est pas une faiblesse. Il est souvent le signe que vous cherchez sincèrement. C'est un chemin, pas une impasse.";
             citationJesus = "« Cherchez et vous trouverez. » (Matthieu 7,7)";
+            
+            citationPenseur = "« Le cœur a ses raisons que la raison ne connaît point. » / « Le silence éternel de ces espaces infinis m'effraie. »";
+            penseurNom = "Blaise Pascal (mathématicien, philosophe)";
+            penseurExplication = "Entre la raison et le cœur, il y a un espace où la foi peut naître. Le doute n'est pas l'absence de foi, mais sa condition de possibilité.";
+            
             citationMagistere = "« Comprends pour croire, crois pour comprendre. » – Saint Augustin / « La foi n'est pas une opinion, c'est une rencontre. » – Benoît XVI";
             referenceCEC = "CEC 150-165 : La foi, réponse libre de l'homme à Dieu.";
-            citationPsycho = "« Le doute est le compagnon de route de la foi. » – Paul Ricoeur / « La crise est une opportunité de croissance. » – Erik Erikson";
-            auteurPsycho = "Erik Erikson (psychologie du développement) / Paul Ricoeur (philosophie de l'interprétation)";
+            citationPsycho = "« Le doute est le compagnon de route de la foi. » – Paul Ricoeur";
+            auteurPsycho = "Paul Ricoeur (philosophie de l'interprétation)";
             citationJustice = "« Liberté de conscience et de religion. » – Charte canadienne (art. 2) / Déclaration universelle (art. 18)";
-            referenceDroit = "Droit à la liberté de pensée, de conscience et de religion (jurisprudence)";
+            referenceDroit = "Droit à la liberté de pensée, de conscience et de religion";
         }
         // === SOUFFRANCE / MALADIE ===
         else if (lowerSituation.includes("maladie") || lowerSituation.includes("souffrance") || lowerSituation.includes("douleur") || lowerSituation.includes("handicap")) {
@@ -193,11 +214,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Comment vivez-vous cette épreuve ? Qu'est-ce qui vous aide à tenir ?";
             conseilSpecifique = "La souffrance isole. Cherchez une présence, une parole, un geste. Vous n'êtes pas obligé(e) de porter cela seul(e).";
             citationJesus = "« Venez à moi, vous tous qui peinez et ployez sous le fardeau, et je vous donnerai le repos. » (Matthieu 11,28)";
-            citationMagistere = "« La souffrance est un mystère qui devient fécond par l'amour. » – Jean-Paul II (Salvifici Doloris) / « Offrir sa souffrance, c'est la transformer en amour. » – Charles de Foucauld";
+            
+            citationPenseur = "« L'attention est la forme la plus rare et la plus pure de la générosité. » / « La souffrance est le plus grand des privilèges, car elle ouvre les yeux. »";
+            penseurNom = "Simone Weil (philosophe)";
+            penseurExplication = "La souffrance, lorsqu'elle est accueillie sans révolte, peut devenir un lieu de rencontre avec le divin et avec l'autre.";
+            
+            citationMagistere = "« La souffrance est un mystère qui devient fécond par l'amour. » – Jean-Paul II (Salvifici Doloris)";
             referenceCEC = "CEC 1500-1510 : La maladie dans la vie chrétienne, sens de la souffrance.";
-            citationPsycho = "« La souffrance non reconnue devient destructrice. » – Carl Jung / « La vulnérabilité est la source du courage. » – Brené Brown";
-            auteurPsycho = "Carl Jung (psychanalyse) / Brené Brown (vulnérabilité et honte)";
-            citationJustice = "« Droit à l'égalité sans discrimination fondée sur le handicap. » – Charte canadienne (art. 15) / Convention relative aux droits des personnes handicapées (ONU)";
+            citationPsycho = "« La souffrance non reconnue devient destructrice. » – Carl Jung";
+            auteurPsycho = "Carl Jung (psychanalyse)";
+            citationJustice = "« Droit à l'égalité sans discrimination fondée sur le handicap. » – Charte canadienne (art. 15)";
             referenceDroit = "Loi sur l'équité en matière d'emploi / Loi sur l'accessibilité (Canada)";
         }
         // === CONFLIT ===
@@ -206,11 +232,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Qu'est-ce qui est le plus important pour vous : avoir raison, ou retrouver la paix ?";
             conseilSpecifique = "Parfois, un petit geste suffit. Une main tendue, un silence, un pardon même silencieux.";
             citationJesus = "« Heureux les artisans de paix, car ils seront appelés fils de Dieu. » (Matthieu 5,9)";
+            
+            citationPenseur = "« Le pardon ne change pas le passé, mais il élargit l'avenir. » / « Sans le pardon, nous restons liés au mal que nous avons subi. »";
+            penseurNom = "Desmond Tutu (archevêque sud-africain, prix Nobel de la paix)";
+            penseurExplication = "Le pardon n'est pas un oubli, c'est une libération. Il ne justifie pas l'injustice, il crée un espace pour la guérison.";
+            
             citationMagistere = "« La paix n'est pas l'absence de conflit, mais la présence de justice. » – Pape Paul VI / « Le pardon est le souffle de Dieu. » – Pape François";
             referenceCEC = "CEC 2302-2306 : Le respect de la paix et l'évitement des conflits.";
-            citationPsycho = "« Le conflit non résolu grandit dans le silence. » – Virginia Satir / « L'écoute active est la clé de la résolution. » – Thomas Gordon";
-            auteurPsycho = "Virginia Satir (thérapie familiale) / Thomas Gordon (communication non violente)";
-            citationJustice = "« Droit à la sécurité de la personne. » – Charte canadienne / « Droit à un recours effectif. » – Déclaration universelle (art. 8)";
+            citationPsycho = "« L'écoute active est la clé de la résolution. » – Thomas Gordon";
+            auteurPsycho = "Thomas Gordon (communication non violente)";
+            citationJustice = "« Droit à la sécurité de la personne. » – Charte canadienne";
             referenceDroit = "Médiation judiciaire / Lois sur la prévention de la violence familiale";
         }
         // === TRAVAIL / CARRIÈRE ===
@@ -219,11 +250,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Votre valeur se réduit-elle à votre travail ? Que voudriez-vous préserver, quoi qu'il arrive ?";
             conseilSpecifique = "Un emploi se perd ou se trouve. Votre dignité, elle, ne dépend pas d'un contrat.";
             citationJesus = "« Ne vous inquiétez pas pour demain. » (Matthieu 6,34)";
-            citationMagistere = "« Le travail est pour l'homme, non l'homme pour le travail. » – Jean-Paul II (Laborem Exercens) / « La dignité du travailleur est sacrée. » – Pape François";
+            
+            citationPenseur = "« Le travail n'est pas seulement une production, c'est une participation à la création. » / « La dignité du travailleur est plus importante que le travail lui-même. »";
+            penseurNom = "Jean-Paul II (encyclique Laborem Exercens)";
+            penseurExplication = "Le travail a un sens qui dépasse le salaire : il est une expression de la personne, une participation à l'œuvre commune.";
+            
+            citationMagistere = "« Le travail est pour l'homme, non l'homme pour le travail. » – Jean-Paul II (Laborem Exercens)";
             referenceCEC = "CEC 2427-2428 : Le travail dans la doctrine sociale de l'Église.";
-            citationPsycho = "« Le sentiment d'être utile donne un sens à la vie. » – Viktor Frankl / « L'épuisement professionnel vient de l'absence de reconnaissance. » – Christophe Dejours";
-            auteurPsycho = "Viktor Frankl (logothérapie) / Christophe Dejours (psychodynamique du travail)";
-            citationJustice = "« Droit au travail, à des conditions équitables. » – Déclaration universelle (art. 23) / « Droit à la non-discrimination en matière d'emploi. » – Charte canadienne";
+            citationPsycho = "« Le sentiment d'être utile donne un sens à la vie. » – Viktor Frankl";
+            auteurPsycho = "Viktor Frankl (logothérapie)";
+            citationJustice = "« Droit au travail, à des conditions équitables. » – Déclaration universelle (art. 23)";
             referenceDroit = "Normes du travail (congés, préavis de licenciement) / Loi sur l'équité salariale";
         }
         // === COUPLE / AMOUR ===
@@ -232,11 +268,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Dans cette relation, qu'est-ce qui vous nourrit ? Qu'est-ce qui vous épuise ?";
             conseilSpecifique = "L'amour vrai ne fait pas souffrir gratuitement. Parfois, prendre du recul est nécessaire. Parfois, se rapprocher aussi.";
             citationJesus = "« Ce que Dieu a uni, que l'homme ne le sépare pas. » (Marc 10,9)";
-            citationMagistere = "« L'amour humain participe à l'amour de Dieu. » – Jean-Paul II (Familiaris Consortio) / « Le mariage est une vocation à la sainteté. » – Pape François";
+            
+            citationPenseur = "« Aimer, c'est dire 'tu ne mourras pas'. » / « L'amour n'est pas seulement un sentiment, c'est un engagement. »";
+            penseurNom = "Gabriel Marcel (philosophe)";
+            penseurExplication = "L'amour véritable est une fidélité au-delà des sentiments. Il est une promesse qui traverse le temps, même dans l'épreuve.";
+            
+            citationMagistere = "« L'amour humain participe à l'amour de Dieu. » – Jean-Paul II (Familiaris Consortio)";
             referenceCEC = "CEC 1601-1666 : Le sacrement du mariage, l'amour conjugal.";
-            citationPsycho = "« L'amour est une décision, pas seulement un sentiment. » – Gary Chapman / « Les blessures de l'enfance se rejouent en couple. » – John Bowlby (théorie de l'attachement)";
-            auteurPsycho = "Gary Chapman (langages de l'amour) / John Bowlby (attachement)";
-            citationJustice = "« Droit au respect de la vie privée et familiale. » – Charte canadienne / « Droit à l'égalité dans le mariage. » – Loi sur le mariage civil";
+            citationPsycho = "« Les blessures de l'enfance se rejouent en couple. » – John Bowlby";
+            auteurPsycho = "John Bowlby (théorie de l'attachement)";
+            citationJustice = "« Droit au respect de la vie privée et familiale. » – Charte canadienne";
             referenceDroit = "Loi sur le divorce (Canada) / Médiation familiale / Pension alimentaire";
         }
         // === FAMILLE / ÉDUCATION ===
@@ -245,11 +286,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Quel est votre plus grand souhait pour cette personne qui vous est chère ?";
             conseilSpecifique = "L'amour ne se prouve pas par la perfection, mais par la présence, la patience, l'écoute.";
             citationJesus = "« Laissez les petits enfants venir à moi. » (Marc 10,14)";
-            citationMagistere = "« Les parents sont les premiers éducateurs de leurs enfants. » – Concile Vatican II (Gravissimum Educationis) / « Chaque enfant est un don de Dieu. » – Pape François";
+            
+            citationPenseur = "« La personne la plus vulnérable est celle qui nous enseigne le plus. » / « La faiblesse est une force quand elle est partagée. »";
+            penseurNom = "Jean Vanier (fondateur de l'Arche)";
+            penseurExplication = "L'éducation n'est pas seulement une transmission de savoir, c'est une rencontre avec l'autre dans sa vulnérabilité et sa dignité.";
+            
+            citationMagistere = "« Les parents sont les premiers éducateurs de leurs enfants. » – Concile Vatican II (Gravissimum Educationis)";
             referenceCEC = "CEC 2221-2231 : Les devoirs des parents, l'éducation des enfants.";
-            citationPsycho = "« L'enfant a besoin de se sentir aimé inconditionnellement. » – Carl Rogers / « Les limites sont aussi importantes que l'affection. » – Dolto / Winnicott : « Un enfant a besoin de présence. »";
-            auteurPsycho = "Françoise Dolto (psychanalyse) / Donald Winnicott (pédiatrie)";
-            citationJustice = "« Droit à la protection de l'enfant. » – Convention internationale des droits de l'enfant (ONU) / « Droit à l'éducation. » – Déclaration universelle (art. 26)";
+            citationPsycho = "« L'enfant a besoin de se sentir aimé inconditionnellement. » – Carl Rogers";
+            auteurPsycho = "Carl Rogers (psychologie humaniste)";
+            citationJustice = "« Droit à la protection de l'enfant. » – Convention internationale des droits de l'enfant (ONU)";
             referenceDroit = "Loi sur la protection de la jeunesse / Autorité parentale / Droit de garde";
         }
         // === INJUSTICE ===
@@ -258,11 +304,16 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Que pouvez-vous faire, à votre échelle, sans vous mettre en danger ?";
             conseilSpecifique = "Une petite action vaut mieux qu'une grande indignation silencieuse. Parfois, témoigner, c'est déjà agir.";
             citationJesus = "« Heureux ceux qui ont faim et soif de justice. » (Matthieu 5,6)";
-            citationMagistere = "« La justice sans la miséricorde est une cruauté. » – Saint Augustin / « La doctrine sociale de l'Église est une éthique de la justice. » – Pape Benoît XVI";
+            
+            citationPenseur = "« L'injustice nulle part est préférable à l'injustice partout. » / « La lutte contre l'injustice commence par un seul refus. »";
+            penseurNom = "Martin Luther King Jr. (pasteur, prix Nobel de la paix)";
+            penseurExplication = "La justice n'est pas un état, mais un combat. Chaque geste compte. Ne pas subir, ne pas se taire, c'est déjà résister.";
+            
+            citationMagistere = "« La justice sans la miséricorde est une cruauté. » – Saint Augustin / « La doctrine sociale de l'Église est une éthique de la justice. » – Benoît XVI";
             referenceCEC = "CEC 1928-1948 : La justice sociale, le bien commun, la solidarité.";
-            citationPsycho = "« L'injustice répétée détruit la santé mentale. » – Ignacio Martín-Baró / « La honte est la marque des victimes d'injustice. » – Brené Brown";
-            auteurPsycho = "Ignacio Martín-Baró (psychologie de la libération) / Brené Brown (vulnérabilité)";
-            citationJustice = "« Droit à l'égalité sans discrimination. » – Charte canadienne (art. 15) / « Droit à la justice et à un recours effectif. » – Déclaration universelle (art. 8, 10)";
+            citationPsycho = "« La honte est la marque des victimes d'injustice. » – Brené Brown";
+            auteurPsycho = "Brené Brown (vulnérabilité et honte)";
+            citationJustice = "« Droit à l'égalité sans discrimination. » – Charte canadienne (art. 15)";
             referenceDroit = "Loi canadienne sur les droits de la personne / Recours collectifs / Accès à l'aide juridique";
         }
         // === GÉNÉRIQUE ===
@@ -271,10 +322,15 @@ document.getElementById('submitBtn').onclick = function() {
             questionSpecifique = "Qu'est-ce qui serait, pour vous, un premier pas possible, même tout petit ?";
             conseilSpecifique = "Prenez une respiration. Une chose à la fois. Vous n'êtes pas obligé(e) de tout résoudre aujourd'hui.";
             citationJesus = "« Je suis le chemin, la vérité et la vie. » (Jean 14,6)";
-            citationMagistere = "« La dignité humaine est le fondement de tous les droits. » – Catéchisme (CEC 1700-1706) / Pape François : « La vie est un don, pas une possession. »";
+            
+            citationPenseur = "« L'essentiel est invisible pour les yeux. » / « Ce qui donne un sens à la vie donne aussi un sens à la mort. »";
+            penseurNom = "Antoine de Saint-Exupéry / Viktor Frankl";
+            penseurExplication = "Dans toute épreuve, il y a une quête de sens. Ce sens, on ne le trouve pas, on le construit, parfois une petite action à la fois.";
+            
+            citationMagistere = "« La dignité humaine est le fondement de tous les droits. » – Catéchisme (CEC 1700-1706)";
             referenceCEC = "CEC 1700-1715 : La dignité de la personne humaine, la liberté, la conscience.";
-            citationPsycho = "« Ce qui compte, c'est le sens qu'on donne à ce qui nous arrive. » – Viktor Frankl / « La voie du milieu est celle de la sagesse. » – Carl Jung";
-            auteurPsycho = "Viktor Frankl (logothérapie) / Carl Jung (psychanalyse)";
+            citationPsycho = "« Ce qui compte, c'est le sens qu'on donne à ce qui nous arrive. » – Viktor Frankl";
+            auteurPsycho = "Viktor Frankl (logothérapie)";
             citationJustice = "« Tous les êtres humains naissent libres et égaux en dignité et en droits. » – Déclaration universelle (art. 1)";
             referenceDroit = "Charte canadienne des droits et libertés / Droit à la vie privée / Droit à la sécurité de la personne";
         }
@@ -295,6 +351,13 @@ document.getElementById('submitBtn').onclick = function() {
             
             <div class="citation">
                 ✝️ ${citationJesus}
+            </div>
+            
+            <div class="penseur">
+                <strong>📖 La voix d'un penseur</strong><br>
+                « ${citationPenseur} »<br>
+                <em>– ${penseurNom}</em><br>
+                <small>${penseurExplication}</small>
             </div>
             
             <strong>2. Prendre le temps de l'écoute intérieure (Maurice Zundel)</strong><br><br>
@@ -351,12 +414,12 @@ document.getElementById('submitBtn').onclick = function() {
                 <strong>📖 Pour aller plus loin</strong><br>
                 • Parler à un accompagnateur spirituel ou un psychologue<br>
                 • Consulter les services d'aide juridique de votre région<br>
-                • Lire « La dignité humaine » (Catéchisme, CEC 1700-1715)<br>
-                • Lire « Le droit de mourir dans la dignité » (documentation sur les soins palliatifs)
+                • Lire « La dignité humaine » (Catéchisme, CEC 1700-1715)
             </div>
             
             <hr>
             <small>📚 Sources spirituelles : Jésus Christ, Saint Augustin, Saint Thomas d'Aquin, Saint Jean de la Croix, Sainte Thérèse de Lisieux, Saint François d'Assise, Benoît XVI, Joseph Kentenich, Charles de Foucauld, Simone Weil, Pères du désert, Pape François, Jean-Paul II, Catéchisme de l'Église catholique.</small><br>
+            <small>📚 Sources penseurs : Emmanuel Levinas, C.S. Lewis, Blaise Pascal, Simone Weil, Desmond Tutu, Jean-Paul II (philosophie du travail), Gabriel Marcel, Jean Vanier, Martin Luther King Jr.</small><br>
             <small>📚 Sources psychologiques : Carl Rogers, Jean Vanier, Viktor Frankl, Brené Brown, Carl Jung, Erik Erikson, Elisabeth Kübler-Ross, Françoise Dolto, Donald Winnicott.</small><br>
             <small>📚 Sources juridiques : Charte canadienne des droits et libertés, Déclaration universelle des droits de l'homme, Convention internationale des droits de l'enfant, doctrine sociale de l'Église.</small>`;
         
