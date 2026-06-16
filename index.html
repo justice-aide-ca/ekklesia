@@ -18,6 +18,38 @@
         .sagesse { background: #faf6ef; padding: 12px; border-radius: 12px; margin: 10px 0; }
         .ressources { background: #f0f2f5; padding: 12px; border-radius: 12px; margin: 15px 0; font-size: 0.9rem; }
         footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #aaa39a; }
+        
+        /* Lecteur audio spirituel */
+        .lecteur {
+            background: #f0ede8;
+            padding: 10px 15px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+        .lecteur button {
+            background: #4a6f5e;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lecteur button:hover {
+            background: #3a5a4b;
+        }
+        .lecteur span {
+            color: #4a3b2c;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -29,6 +61,16 @@
     <input type="text" id="role" placeholder="Qui êtes-vous ? (optionnel)">
     <button id="submitBtn">Recevoir une aide au discernement →</button>
 
+    <!-- Lecteur de musique spirituelle -->
+    <div class="lecteur">
+        <button id="playChantBtn">🎵</button>
+        <span id="chantStatus">♫ Chant grégorien (Veni Creator Spiritus)</span>
+    </div>
+    <audio id="chantAudio" loop preload="none">
+        <source src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Veni_Creator_Spiritus.ogg" type="audio/ogg">
+        Votre navigateur ne supporte pas l'audio.
+    </audio>
+
     <div id="reponse" class="reponse-card" style="display:none;"></div>
     <div id="loading" class="loading" style="display:none;">🕯️ Un instant...</div>
 
@@ -36,6 +78,37 @@
 </div>
 
 <script>
+// Gestionnaire du lecteur audio
+const playBtn = document.getElementById('playChantBtn');
+const chantAudio = document.getElementById('chantAudio');
+const chantStatus = document.getElementById('chantStatus');
+let isPlaying = false;
+
+playBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        chantAudio.pause();
+        playBtn.innerHTML = '🎵';
+        chantStatus.innerHTML = '♫ Chant grégorien (en pause)';
+        isPlaying = false;
+    } else {
+        chantAudio.volume = 0.2;
+        chantAudio.play().catch(e => {
+            console.log("Lecture automatique bloquée");
+            chantStatus.innerHTML = '🎵 Cliquez à nouveau (navigation requise)';
+        });
+        playBtn.innerHTML = '⏸️';
+        chantStatus.innerHTML = '♫ Chant grégorien – "Veni Creator Spiritus" (Esprit Créateur)';
+        isPlaying = true;
+    }
+});
+
+chantAudio.addEventListener('ended', () => {
+    playBtn.innerHTML = '🎵';
+    chantStatus.innerHTML = '♫ Chant grégorien (terminé)';
+    isPlaying = false;
+});
+
+// Fonction principale du discernement
 document.getElementById('submitBtn').onclick = function() {
     const situation = document.getElementById('situation').value.trim();
     const roleInput = document.getElementById('role').value.trim();
